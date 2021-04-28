@@ -13,16 +13,16 @@ const App = () => {
   const [query, setQuery] = useState('chicken');
 
   useEffect(() => {
+    const getRecipe = async () => {
+      const response = await fetch(`https://api.edamam.com/search?q=${query}&app_id=${APP_ID}&app_key=${APP_KEY}`)
+      const data = await response.json();
+      setRecipe(data.hits);
+      console.log(data.hits);
+    } 
     getRecipe();
   },[query]);
 
-  const getRecipe = async () => {
-    const response = await fetch(`https://api.edamam.com/search?q=${query}&app_id=${APP_ID}&app_key=${APP_KEY}`)
-    const data = await response.json();
-    setRecipe(data.hits);
-    console.log(data.hits);
-  }
-
+  
   const handleChange = (e) => {
     setSearch(e.target.value);
   }
@@ -44,7 +44,7 @@ const App = () => {
     <section className='recipe'>
     <div className='recipe-center'>
     {recipe.map(recip => (
-      <Recipe key={recipe.id} title={recip.recipe.label} type={recip.recipe.mealType}
+      <Recipe key={recip.recipe.image} title={recip.recipe.label} type={recip.recipe.mealType}
        image={recip.recipe.image} ingredients={recip.recipe.ingredients} />
     ))}
     </div>
